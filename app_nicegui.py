@@ -26,7 +26,7 @@ ui.add_head_html('''
 with ui.left_drawer(value=True).style('background-color: #2C3E50; color: white;'):
     ui.label('📊 导航').style('font-size: 20px; font-weight: bold; margin-bottom: 20px;')
     selected = ui.radio(
-        ['研究概览', '描述性统计', '动机结构', '语言迁移', '回归分析', '质性发现'],
+        ['研究概览', '描述性统计', '动机结构', '语言迁移', '回归分析', '质性发现', '问卷原文'],
         value='研究概览'
     ).style('color: white;')
 
@@ -42,7 +42,7 @@ def render_page():
             with ui.card().classes('card w-full'):
                 ui.label('英语专业学生德语二外学习动机研究').style(
                     'font-size: 28px; font-weight: bold; color: #2C3E50;')
-                ui.label(f'基于L2MSS理论框架的混合方法研究（当前读取到的有效样本量：{len(df)} 人）').style(
+                ui.label(f'基于L2MSS理论框架的混合方法研究（当前有效样本量：{len(df)} 人）').style(
                     'color: #7F8C8D; margin-bottom: 20px;')
 
             with ui.card().classes('card w-full'):
@@ -71,7 +71,6 @@ def render_page():
             with ui.card().classes('card w-full'):
                 ui.label('【表1】描述性统计与信度分析（模仿论文 Table 1）').classes('table-title')
 
-                # 计算信度
                 def cronbach_alpha(df_items):
                     df_items = df_items.dropna()
                     k = df_items.shape[1]
@@ -179,10 +178,9 @@ def render_page():
 
         # ========== 页面5：回归分析 ==========
         elif selected.value == '回归分析':
-            x_vars = ['德语学习体验','理想德语自我','语言迁移感知']
+            x_vars = ['德语学习体验', '理想德语自我', '语言迁移感知']
             y_var = '学习投入总分'
 
-            # 核心修改：使用均值填补缺失值，绝不丢掉任何一个人
             reg_data = df[x_vars + [y_var]].copy()
             for col in x_vars + [y_var]:
                 reg_data[col] = reg_data[col].fillna(reg_data[col].mean())
@@ -197,10 +195,8 @@ def render_page():
                     X = sm.add_constant(X)
                     y = reg_data[y_var]
 
-                    # 使用 pinv 防止报错
                     model = sm.OLS(y, X).fit(method='pinv')
 
-                    # 计算 VIF
                     vif_data = []
                     for i, var in enumerate(X.columns):
                         if var != 'const':
@@ -209,7 +205,6 @@ def render_page():
                         else:
                             vif_data.append(np.nan)
 
-                    # 计算标准化系数 Beta
                     X_std = (X[x_vars] - X[x_vars].mean()) / X[x_vars].std()
                     y_std = (y - y.mean()) / y.std()
                     model_std = sm.OLS(y_std, X_std).fit()
@@ -296,6 +291,112 @@ def render_page():
                         with ui.row():
                             ui.label(f"{row['ID']}：").style('font-weight: bold;')
                             ui.label(row['开放题2'])
+
+        # ========== 页面7：问卷原文 ==========
+        elif selected.value == '问卷原文':
+            with ui.card().classes('card w-full'):
+                ui.label('📄 调查问卷全文').style('font-size: 28px; font-weight: bold; color: #2C3E50;')
+                ui.label('《英语专业本科生第二外语（德语）学习动机与投入调查问卷》').style(
+                    'color: #7F8C8D; margin-bottom: 20px; font-size: 16px;')
+
+                ui.markdown("""
+### 第一部分：基本信息
+
+**1. 你的性别：**
+○ 男  ○ 女
+
+**2. 你的生源地：**
+○ 城市  ○ 县城  ○ 乡镇/农村
+
+**3. 你的英语专业四级（TEM-4）成绩：**
+○ 未考  ○ 未通过  ○ 合格  ○ 良好  ○ 优秀
+
+**4. 你第一学期德语期末成绩（自报等级）：**
+○ 90分以上  ○ 80-89分  ○ 70-79分  ○ 60-69分  ○ 60分以下
+
+**5. 入学前你是否接触过德语？**
+○ 从未接触  ○ 偶尔接触（如影视、音乐）  ○ 系统学习过（如中学选修课）
+
+
+### 第二部分：选择德语的原因
+
+**6. 你选择德语作为第二外语的主要原因是什么？（可多选，最多选3项）**
+□ 英语和德语同属日耳曼语系，有语言迁移优势
+□ 对德国文化、哲学、音乐、文学感兴趣
+□ 听说德语考研竞争相对较小
+□ 家人/老师建议
+□ 被调剂/随机分配
+□ 德语老师的口碑好
+□ 身边同学都选了德语
+□ 希望未来去德国留学或工作
+□ 其他（请注明：______）
+
+
+### 第三部分：德语学习动机（L2MSS 量表）
+
+*以下题目均采用 1-6 级评分（1=完全不同意，6=完全同意）*
+
+**7. 理想德语自我：**
+1. 我经常想象自己未来能用德语与德语母语者自如交流
+2. 我希望将来能从事与德语相关的工作或研究
+3. 掌握德语是我未来理想自我形象的一部分
+4. 我渴望有一天能读懂德语原版的哲学或文学作品
+5. 如果我的德语能达到较高水平，我会觉得自己更有竞争力
+
+**8. 应该德语自我：**
+1. 家人认为学好德语对我未来的发展很重要
+2. 我觉得不学好德语会辜负老师或家长的期望
+3. 周围同学都在认真学德语，我不学好像说不过去
+4. 如果德语考试不及格，我会觉得对不起父母的投入
+5. 学好德语是我作为英语专业学生“应该”做到的事
+
+**9. 德语学习体验：**
+1. 上德语课让我感到愉快和充实
+2. 我喜欢德语课上的互动和氛围
+3. 德语老师讲课的方式让我对这门语言更感兴趣
+4. 在德语学习中遇到困难时，我愿意花时间去克服
+5. 相比其他课程，我更期待上德语课
+
+**10. 英语与德语关系感知（语言迁移）：**
+1. 我觉得英语基础对我学德语有帮助
+2. 德语的词汇和英语有很多相似之处，这让我学起来更轻松
+3. 我会主动将德语的语法规则与英语进行对比来帮助理解
+4. 英语的语序习惯有时会干扰我学德语
+
+
+### 第四部分：学习投入
+
+**11. 你平均每周在课外花在德语学习上的时间大约是：**
+○ 1小时以下  ○ 1-2小时  ○ 2-3小时  ○ 3-5小时  ○ 5小时以上
+
+**12. 以下关于学习投入的描述：**
+1. 我会按时完成德语作业并主动复习
+2. 我在德语课上会积极参与互动和练习
+3. 我会主动归纳德语的语法规则并整理笔记
+4. 我会规划自己的德语学习进度并设定目标
+5. 我对德语学习保持积极的态度
+6. 即使遇到困难，我也不会轻易放弃德语学习
+
+
+### 第五部分：学习困难感知
+
+**13. 以下德语学习的典型难点，请根据你目前的感受评估其困难程度（1-5分）：**
+1. 名词的语法性别（der/die/das）
+2. 名词的格变化（Nominativ/Akkusativ/Dativ/Genitiv）
+3. 动词变位
+4. 语序（如动词第二位、从句动词末位）
+5. 特殊发音（如 ü, ö, ch, r）
+6. 词汇记忆（与英语形近但义不同的词）
+
+
+### 第六部分：开放题
+
+**14. 如果重新选择，你还会选择德语作为第二外语吗？为什么？**
+（请填写：______）
+
+**15. 你对目前的德语教学有什么建议？**
+（请填写：______）
+                """).style('font-size: 15px; line-height: 1.8;')
 
 
 # 绑定事件并渲染
