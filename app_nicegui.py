@@ -42,8 +42,7 @@ def render_page():
             with ui.card().classes('card w-full'):
                 ui.label('英语专业学生德语二外学习动机研究').style(
                     'font-size: 28px; font-weight: bold; color: #2C3E50;')
-                ui.label(f'基于L2MSS理论框架的混合方法研究（当前有效样本量：{len(df)} 人）').style(
-                    'color: #7F8C8D; margin-bottom: 20px;')
+                ui.label("📌 注：当前为7人小样本探索性回归（保留3个核心自变量），模型有效自由度增加，结果能更真实地反映变量间的预测关系。").style('font-size: 13px; color: #7F8C8D; margin-top: 10px; padding: 10px; border-radius: 5px;')
 
             with ui.card().classes('card w-full'):
                 ui.label('📋 基本信息').style('font-size: 20px; font-weight: bold;')
@@ -414,9 +413,11 @@ render_page()
 # 启动应用
 import os
 # ... 其他代码 ...
+import os
+# ... 其他代码 ...
 ui.run(
-    host='0.0.0.0',  # 必须绑定到 0.0.0.0 才能被 Render 扫描到[reference:2]
-    port=int(os.environ.get('PORT', 8080)),  # 动态读取 Render 分配的端口
+    host='0.0.0.0',  # 关键：绑定到 0.0.0.0 才能被 Render 扫描到
+    port=int(os.environ.get('PORT', 8080)),  # 关键：动态读取 Render 分配的端口
     title='德语二外学习动机研究',
     reload=False
 )
