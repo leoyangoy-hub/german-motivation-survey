@@ -1,4 +1,4 @@
 nicegui
 pandas
 numpy
-plotly
+statsmodels
