@@ -1,0 +1,54 @@
+digraph SEM_Model {
+	rankdir=LR
+	Ideal [label="理想二语自我" shape=ellipse]
+	Ought [label="应该二语自我" shape=ellipse]
+	Exp [label="二语学习经历" shape=ellipse]
+	Behavior [label="自主学习行为" shape=ellipse]
+	a1 [label=a1 shape=box]
+	Ideal -> a1
+	a2 [label=a2 shape=box]
+	Ideal -> a2
+	a3 [label=a3 shape=box]
+	Ideal -> a3
+	a4 [label=a4 shape=box]
+	Ideal -> a4
+	a5 [label=a5 shape=box]
+	Ought -> a5
+	a6 [label=a6 shape=box]
+	Ought -> a6
+	a7 [label=a7 shape=box]
+	Ought -> a7
+	a8 [label=a8 shape=box]
+	Ought -> a8
+	a9 [label=a9 shape=box]
+	Exp -> a9
+	a10 [label=a10 shape=box]
+	Exp -> a10
+	a11 [label=a11 shape=box]
+	Exp -> a11
+	a12 [label=a12 shape=box]
+	Exp -> a12
+	a13 [label=a13 shape=box]
+	Behavior -> a13
+	a14 [label=a14 shape=box]
+	Behavior -> a14
+	a15 [label=a15 shape=box]
+	Behavior -> a15
+	a16 [label=a16 shape=box]
+	Behavior -> a16
+	a17 [label=a17 shape=box]
+	Behavior -> a17
+	a18 [label=a18 shape=box]
+	Behavior -> a18
+	a19 [label=a19 shape=box]
+	Behavior -> a19
+	a20 [label=a20 shape=box]
+	Behavior -> a20
+	a21 [label=a21 shape=box]
+	Behavior -> a21
+	Ideal -> Behavior [label=.38]
+	Ought -> Behavior [label=.08]
+	Exp -> Behavior [label=.43]
+	Ideal -> Exp [label=.31]
+	Ought -> Exp [label=-.18]
+}

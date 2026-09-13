@@ -64,6 +64,14 @@ def render_page():
                 ui.label('2. 语言迁移感知如何影响德语学习动机？')
                 ui.label('3. 第二学期初的动机结构有何特征？')
 
+            # 新增：理论假设模型图
+            with ui.card().classes('card w-full'):
+                ui.label('📊 理论假设模型图（L2MSS框架）').style('font-size: 20px; font-weight: bold;')
+                ui.label('图示为本研究的理论假设路径，未来可扩大样本量后使用结构方程模型（SEM）进行验证。').style(
+                    'color: #7F8C8D; font-size: 14px; margin-bottom: 10px;')
+                # 加载刚才生成的图片
+                ui.image('sem_model.png').classes('w-full max-w-4xl mx-auto')
+
         # ========== 页面2：描述性统计 ==========
         elif selected.value == '描述性统计':
             desc_vars = ['理想德语自我', '德语学习体验', '语言迁移感知', '学习投入总分']
