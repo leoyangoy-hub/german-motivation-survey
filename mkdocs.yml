@@ -1,0 +1,39 @@
+site_name: 英语专业学生德语二外学习动机研究
+site_description: 基于L2MSS的混合方法研究
+site_author: 你的姓名
+site_url: https://leoyangoy-hub.github.io/german-motivation-survey/
+repo_url: https://github.com/leoyangoy-hub/german-motivation-survey
+repo_name: leoyangoy-hub/german-motivation-survey
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - search.highlight
+
+nav:
+  - 首页: index.md
+  - 研究背景: 01-background.md
+  - 理论框架: 02-theory.md
+  - 文献综述: 03-literature.md
+  - 研究方法: 04-method.md
+  - 研究发现: 05-findings.md
+  - 质性发现: 06-qualitative.md
+  - 讨论: 07-discussion.md
+  - 结论: 08-conclusion.md
+  - 交互展示: 09-interactive.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
