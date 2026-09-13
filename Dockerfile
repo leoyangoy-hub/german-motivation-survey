@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple niceg
 COPY . .
 
 EXPOSE 8080
-CMD ["python", "app_nicegui.py"]
+CMD ["sh", "-c", "python app_nicegui.py"]

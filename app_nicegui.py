@@ -412,4 +412,11 @@ selected.on_value_change(lambda: render_page())
 render_page()
 
 # 启动应用
-ui.run(title='德语二外学习动机研究', port=8080, reload=False)
+import os
+# ... 其他代码 ...
+ui.run(
+    host='0.0.0.0',  # 必须绑定到 0.0.0.0 才能被 Render 扫描到[reference:2]
+    port=int(os.environ.get('PORT', 8080)),  # 动态读取 Render 分配的端口
+    title='德语二外学习动机研究',
+    reload=False
+)
